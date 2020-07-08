@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: single-app-svc
+spec:
+  selector:
+    matchLabels:
+      app: single-app
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: single-app
+    spec:
+      containers:
+      - name: single-app
+        image: gcr.io/agmsb-k8s/single-app:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000

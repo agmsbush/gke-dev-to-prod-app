@@ -1,0 +1,5 @@
+commonLabels:
+  app: flask
+resources:
+- deployment.yaml
+- service.yaml
