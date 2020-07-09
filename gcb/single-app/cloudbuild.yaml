@@ -3,9 +3,10 @@ steps:
   args:
     - 'build'
     - '-t'
-    - 'gcr.io/${PROJECT_ID}/pipeline:${SHORT_SHA}'
+    - 'gcr.io/${PROJECT_ID}/single-app:${SHORT_SHA}'
     - './gcb/single-app'
+
 - name: "gcr.io/cloud-builders/docker"
   args:
     - 'push'
-    - 'gcr.io/${PROJECT_ID}/pipeline:${SHORT_SHA}'
+    - 'gcr.io/${PROJECT_ID}/single-app:${SHORT_SHA}'
