@@ -33,6 +33,8 @@ steps:
     - '/workspace/resources.yaml'
     - '--image=gcr.io/${PROJECT_ID}/single-app:${SHORT_SHA}'
     - '--label=commit-sha=${SHORT_SHA}'
+    - '--location=${CLOUDSDK_COMPUTE_REGION}'
+    - '--cluster={CLOUDSDK_CONTAINER_CLUSTER}'
   env:
   - 'CLOUDSDK_COMPUTE_REGION=us-west1'
   - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
