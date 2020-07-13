@@ -5,8 +5,8 @@ steps:
   args:
     - '-c'
     - |
-      pip3 install -r ./gcb/app/requirements.txt
-      python3 ./gcb/app/test.py ./gcb/app/
+      pip3 install -r ./app/requirements.txt
+      python3 ./app/test.py ./app/
 
 - id: build
   name: "gcr.io/cloud-builders/docker"
@@ -14,7 +14,7 @@ steps:
     - 'build'
     - '-t'
     - 'gcr.io/${PROJECT_ID}/which-gcp-app:${SHORT_SHA}'
-    - './gcb/app'
+    - './app'
 
 - id: push
   name: "gcr.io/cloud-builders/docker"
@@ -28,7 +28,7 @@ steps:
   args:
     - '-c'
     - |
-      kustomize build "./gcb/overlays/dev" -o "/workspace/resources.yaml"
+      kustomize build "./overlays/dev" -o "/workspace/resources.yaml"
   env:
       - 'CLOUDSDK_COMPUTE_REGION=us-west1'
       - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
