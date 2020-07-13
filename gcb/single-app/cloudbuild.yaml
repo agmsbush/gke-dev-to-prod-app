@@ -19,7 +19,7 @@ steps:
   args:
     - '-c'
     - |
-      kustomize build "./gcb/single-app/k8s/overlays/dev" -o '/workspaces/resources.yaml'
+      kustomize build "./gcb/single-app/k8s/overlays/dev" -o "/workspaces/resources.yaml"
   env:
       - 'CLOUDSDK_COMPUTE_REGION=us-west1'
       - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
