@@ -3,6 +3,6 @@ namespace: prod
 commonLabels:
   env: prod
 bases:
-- ../../base
+- ../../resources
 patchesStrategicMerge:
 - deployment.yaml

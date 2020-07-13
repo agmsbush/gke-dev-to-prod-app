@@ -3,6 +3,6 @@ namespace: dev
 commonLabels:
   env: dev
 bases:
-- ../../base
+- ../../resources
 patchesStrategicMerge:
 - configMap.yaml
