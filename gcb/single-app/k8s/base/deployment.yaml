@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: single-app
-        image: gcr.io/agmsb-k8s/single-app:latest
-        imagePullPolicy: Never
+        image: gcr.io/agmsb-k8s/single-app
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
         env:
