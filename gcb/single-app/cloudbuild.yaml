@@ -14,7 +14,7 @@ steps:
     - 'gcr.io/${PROJECT_ID}/single-app:${SHORT_SHA}'
 
 - id: kustomize-staging
-  name: "gcr.io/${PROJECT_ID}/kustomize"j
+  name: "gcr.io/${PROJECT_ID}/kustomize"
   entrypoint: bash
   args:
     - '-c'
