@@ -13,13 +13,13 @@ steps:
     - 'push'
     - 'gcr.io/${PROJECT_ID}/single-app:${SHORT_SHA}'
 
-- id: kustomize-staging
+- id: kustomize-dev
   name: "gcr.io/${PROJECT_ID}/kustomize"
   entrypoint: bash
   args:
     - '-c'
     - |
-      kustomize build "./gcb/single-app/k8s/overlays/staging" -o "workspace/resources" && cat "workspace/resources/staging-deployment.yaml"
+      kustomize build "./gcb/single-app/k8s/overlays/dev" -o "workspace/resources" && cat "workspace/resources/dev-deployment.yaml"
   env:
       - 'CLOUDSDK_COMPUTE_ZONE=us-west1'
       - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
