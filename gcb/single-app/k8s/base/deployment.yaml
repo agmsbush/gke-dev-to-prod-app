@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: single-app-svc
+  name: single-app
 spec:
   selector:
     matchLabels:
@@ -18,3 +18,9 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 5000
+        env:
+        - name: ENABLE_ALPHA
+          valueFrom:
+            configMapKeyRef:
+              name: alphaFeatures
+              key: enableAlpha

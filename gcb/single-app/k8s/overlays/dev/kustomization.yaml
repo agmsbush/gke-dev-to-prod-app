@@ -1,0 +1,8 @@
+namePrefix: dev-
+commonLabels:
+  env: dev
+bases:
+- ../../base
+patches:
+- replica_count.yaml
+- cpu_count.yaml
