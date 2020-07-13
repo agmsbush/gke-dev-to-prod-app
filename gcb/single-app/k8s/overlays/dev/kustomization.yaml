@@ -1,4 +1,5 @@
 namePrefix: dev-
+namespace: dev
 commonLabels:
   env: dev
 bases:
