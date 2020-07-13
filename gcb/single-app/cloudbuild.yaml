@@ -6,7 +6,7 @@ steps:
     - '-c'
     - |
       pip3 install -r ./gcb/single-app/requirements.txt
-      python3 test.py .
+      python3 ./gcb/single-app/test.py ./gcb/single-app/
 
 - id: build
   name: "gcr.io/cloud-builders/docker"
