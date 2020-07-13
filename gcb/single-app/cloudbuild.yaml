@@ -14,12 +14,16 @@ steps:
     - 'gcr.io/${PROJECT_ID}/single-app:${SHORT_SHA}'
 
 - id: kustomize-staging
-  name: "gcr.io/${PROJECT_ID}/kustomize"
+  name: "gcr.io/${PROJECT_ID}/kustomize"j
+  entrypoint: bash
   args:
-    - 'build'
-    - './gcb/single-app/k8s/overlays/staging'
-    - '-o'
-    - '/workspace/resources.yaml'
+    - '-c'
+    - |
+      kustomize build "./gcb/single-app/k8s/overlays/staging" -o "workspace/resources" && cat "workspace/resources/staging-deployment.yaml"
+  env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-west1'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
+      - 'GCLOUD_PROJECT=agmsb-k8s'
 
 # - id: deploy
 #   name: "gcr.io/cloud-builders/gke-deploy"
