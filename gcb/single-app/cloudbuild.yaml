@@ -1,4 +1,13 @@
 steps:
+- id: test
+  name: "python:3.7"
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      pip3 install -r requirements.txt
+      python3 test.py .
+
 - id: build
   name: "gcr.io/cloud-builders/docker"
   args:
