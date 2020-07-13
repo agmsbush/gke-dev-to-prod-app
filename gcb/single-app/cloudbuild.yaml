@@ -17,7 +17,7 @@ steps:
   name: "gcr.io/${PROJECT_ID}/kustomize"
   args:
     - 'build'
-    - './gcb/single-app/k8s/overlays/staging
+    - './gcb/single-app/k8s/overlays/staging'
     - '-o'
     - '/workspace/resources.yaml'
 
