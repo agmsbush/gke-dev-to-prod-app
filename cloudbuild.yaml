@@ -5,22 +5,22 @@ steps:
   args:
     - '-c'
     - |
-      pip3 install -r ./gcb/single-app/requirements.txt
-      python3 ./gcb/single-app/test.py ./gcb/single-app/
+      pip3 install -r ./gcb/app/requirements.txt
+      python3 ./gcb/app/test.py ./gcb/app/
 
 - id: build
   name: "gcr.io/cloud-builders/docker"
   args:
     - 'build'
     - '-t'
-    - 'gcr.io/${PROJECT_ID}/single-app:${SHORT_SHA}'
-    - './gcb/single-app'
+    - 'gcr.io/${PROJECT_ID}/which-gcp-app:${SHORT_SHA}'
+    - './gcb/app'
 
 - id: push
   name: "gcr.io/cloud-builders/docker"
   args:
     - 'push'
-    - 'gcr.io/${PROJECT_ID}/single-app:${SHORT_SHA}'
+    - 'gcr.io/${PROJECT_ID}/which-gcp-app:${SHORT_SHA}'
 
 - id: kustomize-dev
   name: "gcr.io/${PROJECT_ID}/kustomize"
@@ -28,7 +28,7 @@ steps:
   args:
     - '-c'
     - |
-      kustomize build "./gcb/single-app/k8s/overlays/dev" -o "/workspace/resources.yaml"
+      kustomize build "./gcb/overlays/dev" -o "/workspace/resources.yaml"
   env:
       - 'CLOUDSDK_COMPUTE_REGION=us-west1'
       - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
@@ -40,7 +40,7 @@ steps:
     - 'run'
     - '-f'
     - '/workspace/resources.yaml'
-    - '--image=gcr.io/${PROJECT_ID}/single-app:${SHORT_SHA}'
+    - '--image=gcr.io/${PROJECT_ID}/which-gcp-app:${SHORT_SHA}'
     - '--label=commit-sha=${SHORT_SHA}'
     - '--location=us-west1'
     - '--cluster=oregon'
