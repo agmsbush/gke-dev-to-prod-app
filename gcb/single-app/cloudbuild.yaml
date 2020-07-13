@@ -31,7 +31,7 @@ steps:
     - 'run'
     - '-f'
     - '/workspace/resources.yaml'
-    - '--image=gcr.io/${PROJECT_ID}/single-app:${SHORT_SHA}''
+    - '--image=gcr.io/${PROJECT_ID}/single-app:${SHORT_SHA}'
     - '--label=commit-sha=${SHORT_SHA}'
   env:
   - 'CLOUDSDK_COMPUTE_REGION=us-west1'
