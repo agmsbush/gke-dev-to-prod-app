@@ -5,7 +5,7 @@ steps:
   args:
     - '-c'
     - |
-      pip3 install -r requirements.txt
+      pip3 install -r ./gcb/single-app/requirements.txt
       python3 test.py .
 
 - id: build
