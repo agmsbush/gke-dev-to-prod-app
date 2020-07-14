@@ -34,6 +34,53 @@ steps:
       - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
       - 'GCLOUD_PROJECT=agmsb-k8s'
 
+- id: git-secrets
+  name: gcr.io/cloud-builders/gcloud
+  entrypoint: 'bash'
+  args: [ '-c', 'gcloud secrets versions access latest --secret=github > /root/.ssh/id_github' ]
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+- id: git-configure
+  name: 'gcr.io/cloud-builders/git'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    chmod 600 /root/.ssh/id_github
+    cat <<EOF >/root/.ssh/config
+    Hostname github.com
+    IdentityFile /root/.ssh/id_github
+    EOF
+    ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+- id: git-update-env-repo
+  name: 'gcr.io/cloud-builders/git'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    git clone git@github.com:agmsbush/gke-dev-to-prod-env
+    cd gke-dev-to-prod-env
+    git checkout -b candidate-${SHORT_SHA}
+    cp /workspace/resources.yaml /workspace/gke-dev-to-prod-env/resources.yaml
+    git add .
+    git commit -F- <<EOF
+    This commit updates the gke-flask-app container image to:
+
+        gcr.io/${PROJECT_ID}/pipeline:${SHORT_SHA}.
+
+    Build ID: ${BUILD_ID}
+    EOF 
+    git push --set-upstream origin candidate-${SHORT_SHA}
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
 # - id: gke-deploy-qa
 #   name: "gcr.io/cloud-builders/gke-deploy"
 #   args:
@@ -45,55 +92,55 @@ steps:
 #     - '--location=us-west1'
 #     - '--cluster=oregon'
 
-- id: github-auth
-  name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: 'sh'
-  args:
-    - '-c'
-    - |
-      gsutil cp gs://${PROJECT_ID}-gke-flask-app/hub.enc hub.enc
-      gcloud kms decrypt \
-        --ciphertext-file=hub.enc \
-        --plaintext-file=/config/hub \
-        --location=global \
-        --keyring=gke-flask-app \
-        --key=github
-  volumes:
-    - name: 'config'
-      path: /config
+# - id: github-auth
+#   name: 'gcr.io/cloud-builders/gcloud'
+#   entrypoint: 'sh'
+#   args:
+#     - '-c'
+#     - |
+#       gsutil cp gs://${PROJECT_ID}-gke-flask-app/hub.enc hub.enc
+#       gcloud kms decrypt \
+#         --ciphertext-file=hub.enc \
+#         --plaintext-file=/config/hub \
+#         --location=global \
+#         --keyring=gke-flask-app \
+#         --key=github
+#   volumes:
+#     - name: 'config'
+#       path: /config
 
-- id: gke-flask-app-env
-  name: 'gcr.io/agmsb-k8s/hub'
-  env:
-    - 'HUB_CONFIG=/config/hub'
-  entrypoint: 'sh'
-  args:
-    - '-c'
-    - |
-      hub config --global credential.https://github.com.helper /usr/local/bin/hub-credential-helper
-      hub config --global hub.protocol https
-      hub config --global user.email "agmsbush@gmail.com"
-      hub config --global user.name "Cloud Build"
-      hub clone "https://github.com/agmsbush/gke-dev-to-prod-env.git"
-      cd gke-dev-to-prod-env
+# - id: gke-flask-app-env
+#   name: 'gcr.io/agmsb-k8s/hub'
+#   env:
+#     - 'HUB_CONFIG=/config/hub'
+#   entrypoint: 'sh'
+#   args:
+#     - '-c'
+#     - |
+#       hub config --global credential.https://github.com.helper /usr/local/bin/hub-credential-helper
+#       hub config --global hub.protocol https
+#       hub config --global user.email "agmsbush@gmail.com"
+#       hub config --global user.name "Cloud Build"
+#       hub clone "https://github.com/agmsbush/gke-dev-to-prod-env.git"
+#       cd gke-dev-to-prod-env
 
-      hub branch candidate-${SHORT_SHA}
-      hub checkout candidate-${SHORT_SHA}
+#       hub branch candidate-${SHORT_SHA}
+#       hub checkout candidate-${SHORT_SHA}
 
-      cp /workspace/resources.yaml /workspace/gke-dev-to-prod-env/resources.yaml
+#       cp /workspace/resources.yaml /workspace/gke-dev-to-prod-env/resources.yaml
 
-      hub add .
+#       hub add .
 
-      hub commit -F- <<EOF
-      This commit updates the gke-flask-app container image to:
+#       hub commit -F- <<EOF
+#       This commit updates the gke-flask-app container image to:
 
-          gcr.io/${PROJECT_ID}/pipeline:${SHORT_SHA}.
+#           gcr.io/${PROJECT_ID}/pipeline:${SHORT_SHA}.
 
-      Build ID: ${BUILD_ID}
-      EOF
+#       Build ID: ${BUILD_ID}
+#       EOF
       
-      hub push --set-upstream origin candidate-${SHORT_SHA}
+#       hub push --set-upstream origin candidate-${SHORT_SHA}
 
-  volumes:
-    - name: 'config'
-      path: /config
+#   volumes:
+#     - name: 'config'
+#       path: /config
