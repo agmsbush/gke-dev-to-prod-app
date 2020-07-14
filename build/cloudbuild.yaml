@@ -34,16 +34,16 @@ steps:
       - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
       - 'GCLOUD_PROJECT=agmsb-k8s'
 
-- id: gke-deploy-qa
-  name: "gcr.io/cloud-builders/gke-deploy"
-  args:
-    - 'run'
-    - '-f'
-    - '/workspace/resources.yaml'
-    - '--image=gcr.io/${PROJECT_ID}/gke-flask-app:${SHORT_SHA}'
-    - '--label=commit-sha=${SHORT_SHA}'
-    - '--location=us-west1'
-    - '--cluster=oregon'
+# - id: gke-deploy-qa
+#   name: "gcr.io/cloud-builders/gke-deploy"
+#   args:
+#     - 'run'
+#     - '-f'
+#     - '/workspace/resources.yaml'
+#     - '--image=gcr.io/${PROJECT_ID}/gke-flask-app:${SHORT_SHA}'
+#     - '--label=commit-sha=${SHORT_SHA}'
+#     - '--location=us-west1'
+#     - '--cluster=oregon'
 
 - id: github-auth
   name: 'gcr.io/cloud-builders/gcloud'
@@ -51,13 +51,41 @@ steps:
   args:
     - '-c'
     - |
-      gsutil cp gs://${PROJECT_ID}-pipeline-configs/hub.enc hub.enc
+      gsutil cp gs://${PROJECT_ID}-gke-flask-app/hub.enc hub.enc
       gcloud kms decrypt \
         --ciphertext-file=hub.enc \
         --plaintext-file=/config/hub \
         --location=global \
-        --keyring=${_KMS_KEYRING} \
-        --key=${_KMS_KEY}
+        --keyring=gke-flask-app \
+        --key=github
   volumes:
     - name: 'config'
       path: /config
+
+- id: gke-flask-app-env
+  name: 'gcr.io/agmsb-k8s/hub'
+  env:
+    - 'HUB_CONFIG=/config/hub'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      ACTIVE_ACCOUNT=$(gcloud auth list --filter=status:ACTIVE --format="value(account)")
+      hub config --global credential.https://github.com.helper /usr/local/bin/hub-credential-helper
+      hub config --global hub.protocol https
+      hub config --global user.email "$${ACTIVE_ACCOUNT}"
+      hub config --global user.name "Cloud Build"
+      hub clone "https://github.com/agmsbush/gke-dev-to-prod-env.git"
+
+      hub branch candidate-${SHORT_SHA}
+      hub checkout candidate-${SHORT_SHA}
+      
+      cp /workspace/resources /workspace/gke-dev-to-prod/resources
+
+      hub commit -F- <<EOF
+        This commit updates the gke-flask-app container image to:
+            gcr.io/${PROJECT_ID}/pipeline:${SHORT_SHA}.
+        Build ID: ${BUILD_ID}
+        EOF
+      
+      hub push origin candidate-${SHORT_SHA}
