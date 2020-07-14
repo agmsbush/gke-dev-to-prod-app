@@ -70,10 +70,9 @@ steps:
   args:
     - '-c'
     - |
-      ACTIVE_ACCOUNT=$(gcloud auth list --filter=status:ACTIVE --format="value(account)")
       hub config --global credential.https://github.com.helper /usr/local/bin/hub-credential-helper
       hub config --global hub.protocol https
-      hub config --global user.email "$${ACTIVE_ACCOUNT}"
+      hub config --global user.email "agmsbush@gmail.com"
       hub config --global user.name "Cloud Build"
       hub clone "https://github.com/agmsbush/gke-dev-to-prod-env.git"
       cd gke-dev-to-prod-env
