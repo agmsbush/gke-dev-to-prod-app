@@ -83,7 +83,7 @@ steps:
       
       cp -R /workspace/resources /workspace/gke-dev-to-prod/
 
-      hub add .
+      git add .
 
       hub commit -F- <<EOF
         This commit updates the gke-flask-app container image to:
