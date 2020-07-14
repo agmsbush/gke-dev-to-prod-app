@@ -71,13 +71,7 @@ steps:
     git checkout -b candidate-${SHORT_SHA}
     cp /workspace/resources.yaml /workspace/gke-dev-to-prod-env/resources.yaml
     git add .
-    git commit -F- <<EOF
-    This commit updates the gke-flask-app container image to:
-
-        gcr.io/${PROJECT_ID}/pipeline:${SHORT_SHA}.
-
-    Build ID: ${BUILD_ID}
-    EOF 
+    git commit -m "Update app to image with tag ${SHORT_SHA}"
     git push --set-upstream origin candidate-${SHORT_SHA}
   volumes:
   - name: 'ssh'
