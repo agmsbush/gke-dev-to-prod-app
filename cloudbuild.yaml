@@ -22,13 +22,13 @@ steps:
     - 'push'
     - 'gcr.io/${PROJECT_ID}/gke-flask-app:${SHORT_SHA}'
 
-- id: kustomize-staging
+- id: kustomize-qa
   name: "gcr.io/${PROJECT_ID}/kustomize"
   entrypoint: bash
   args:
     - '-c'
     - |
-      kustomize build "./overlays/staging" -o "/workspace/resources.yaml"
+      kustomize build "./overlays/qa" -o "/workspace/resources.yaml"
   env:
       - 'CLOUDSDK_COMPUTE_REGION=us-west1'
       - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'

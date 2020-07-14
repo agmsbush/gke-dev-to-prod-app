@@ -1,7 +1,7 @@
-namePrefix: staging-
-namespace: staging
+namePrefix: qa-
+namespace: qa
 commonLabels:
-  env: staging
+  env: qa
 bases:
 - ../../resources
 patchesStrategicMerge:
