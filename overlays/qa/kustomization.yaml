@@ -1,9 +1,0 @@
-namePrefix: qa-
-namespace: qa
-commonLabels:
-  env: qa
-bases:
-- ../../resources
-patchesStrategicMerge:
-- deployment.yaml
-- configMap.yaml
