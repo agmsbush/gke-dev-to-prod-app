@@ -1,4 +1,13 @@
 steps:
+- id: test
+  name: "python:3.7"
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      pip3 install -r ./app/requirements.txt
+      python3 ./app/test.py ./app/
+
 - id: build
   name: "gcr.io/cloud-builders/docker"
   args:
@@ -19,13 +28,13 @@ steps:
   args:
     - '-c'
     - |
-      kustomize build "./overlays/qa" -o "/workspace/resources.yaml"
+      kustomize build "./overlays/prod" -o "/workspace/resources.yaml"
   env:
       - 'CLOUDSDK_COMPUTE_REGION=us-west1'
       - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
       - 'GCLOUD_PROJECT=agmsb-k8s'
 
-- id: gke-deploy
+- id: gke-deploy-qa
   name: "gcr.io/cloud-builders/gke-deploy"
   args:
     - 'run'
@@ -35,3 +44,20 @@ steps:
     - '--label=commit-sha=${SHORT_SHA}'
     - '--location=us-west1'
     - '--cluster=oregon'
+
+- id: github-auth
+  name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gsutil cp gs://${PROJECT_ID}-pipeline-configs/hub.enc hub.enc
+      gcloud kms decrypt \
+        --ciphertext-file=hub.enc \
+        --plaintext-file=/config/hub \
+        --location=global \
+        --keyring=${_KMS_KEYRING} \
+        --key=${_KMS_KEY}
+  volumes:
+    - name: 'config'
+      path: /config
