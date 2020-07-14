@@ -81,7 +81,7 @@ steps:
       hub branch candidate-${SHORT_SHA}
       hub checkout candidate-${SHORT_SHA}
       
-      cp -R /workspace/resources /workspace/gke-dev-to-prod/resources
+      cp -R /workspace/resources /workspace/gke-dev-to-prod/
 
       hub commit -F- <<EOF
         This commit updates the gke-flask-app container image to:
