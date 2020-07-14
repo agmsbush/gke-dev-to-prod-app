@@ -81,7 +81,7 @@ steps:
       hub branch candidate-${SHORT_SHA}
       hub checkout candidate-${SHORT_SHA}
 
-      cp /workspace/resources.yaml /workspace/gke-dev-to-prod/
+      cp /workspace/resources.yaml /workspace/gke-dev-to-prod-env/resources.yaml
 
       hub add .
 
