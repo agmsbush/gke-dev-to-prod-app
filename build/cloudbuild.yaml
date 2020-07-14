@@ -76,6 +76,7 @@ steps:
       hub config --global user.email "$${ACTIVE_ACCOUNT}"
       hub config --global user.name "Cloud Build"
       hub clone "https://github.com/agmsbush/gke-dev-to-prod-env.git"
+      cd gke-dev-to-prod-env
 
       hub branch candidate-${SHORT_SHA}
       hub checkout candidate-${SHORT_SHA}
