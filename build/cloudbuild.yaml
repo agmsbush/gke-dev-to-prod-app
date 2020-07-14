@@ -89,3 +89,6 @@ steps:
         EOF
       
       hub push --set-upstream origin candidate-${SHORT_SHA}
+  volumes:
+    - name: 'config'
+      path: /config
