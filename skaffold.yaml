@@ -21,3 +21,8 @@ profiles:
     kustomize:
       paths:
       - overlays/prod
+- name: staging
+  deploy:
+    kustomize:
+      paths:
+      - overlays/staging

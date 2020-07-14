@@ -1,7 +1,9 @@
-namePrefix: dev-
+namePrefix: staging-
+namespace: staging
 commonLabels:
-  env: dev
+  env: staging
 bases:
 - ../../resources
 patchesStrategicMerge:
+- deployment.yaml
 - configMap.yaml
