@@ -88,4 +88,4 @@ steps:
         Build ID: ${BUILD_ID}
         EOF
       
-      hub push origin candidate-${SHORT_SHA}
+      hub push --set-upstream origin candidate-${SHORT_SHA}
