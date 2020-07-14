@@ -80,10 +80,10 @@ steps:
 
       hub branch candidate-${SHORT_SHA}
       hub checkout candidate-${SHORT_SHA}
-      
-      cp -R /workspace/resources /workspace/gke-dev-to-prod/
 
-      git add .
+      cp /workspace/resources.yaml /workspace/gke-dev-to-prod/
+
+      hub add .
 
       hub commit -F- <<EOF
         This commit updates the gke-flask-app container image to:
@@ -92,6 +92,7 @@ steps:
         EOF
       
       hub push --set-upstream origin candidate-${SHORT_SHA}
+
   volumes:
     - name: 'config'
       path: /config
