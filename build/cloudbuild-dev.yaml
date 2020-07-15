@@ -15,7 +15,7 @@ steps:
     - '-t'
     - 'gcr.io/${PROJECT_ID}/gke-flask-app:${SHORT_SHA}'
     - './app'
-s
+
 - id: push
   name: "gcr.io/cloud-builders/docker"
   args:
