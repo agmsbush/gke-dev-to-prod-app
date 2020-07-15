@@ -19,7 +19,9 @@ steps:
   args:
     - '-c'
     - |
+      cd ./resources
       kustomize edit set image gcr.io/${PROJECT_ID}/gke-flask-app:${SHORT_SHA}
+      cd ..
       kustomize build "./overlays/prod" -o "/workspace/resources.yaml"
   env:
       - 'CLOUDSDK_COMPUTE_REGION=us-west1'
