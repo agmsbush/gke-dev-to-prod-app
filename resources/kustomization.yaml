@@ -6,6 +6,3 @@ resources:
 - deployment.yaml
 - service.yaml
 - configMap.yaml
-images:
-- name: gcr.io/agmsb-k8s/gke-flask-app
-  newTag: a62c31edb966096940b8bcfbf29565d90c684798
