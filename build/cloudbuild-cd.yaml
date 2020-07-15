@@ -1,13 +1,25 @@
 steps:
+- id: build
+  name: "gcr.io/cloud-builders/docker"
+  args:
+    - 'build'
+    - '-t'
+    - 'gcr.io/${PROJECT_ID}/gke-flask-app:${SHORT_SHA}'
+    - './app'
+
+- id: push
+  name: "gcr.io/cloud-builders/docker"
+  args:
+    - 'push'
+    - 'gcr.io/${PROJECT_ID}/gke-flask-app:${SHORT_SHA}'
+  
 - id: kustomize
   name: "gcr.io/${PROJECT_ID}/kustomize"
   entrypoint: bash
   args:
     - '-c'
     - |
-      cd ./resources
-      kustomize edit set image gcr.io/${PROJECT_ID}/gke-flask-app:$(git log -n 2 --pretty=format:"%H" | tail -1)
-      cd ..
+      kustomize edit set image gcr.io/${PROJECT_ID}/gke-flask-app:${SHORT_SHA}
       kustomize build "./overlays/prod" -o "/workspace/resources.yaml"
   env:
       - 'CLOUDSDK_COMPUTE_REGION=us-west1'
