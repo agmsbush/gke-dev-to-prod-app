@@ -1,3 +1,4 @@
+steps:
 - id: kustomize
   name: "gcr.io/${PROJECT_ID}/kustomize"
   entrypoint: bash
