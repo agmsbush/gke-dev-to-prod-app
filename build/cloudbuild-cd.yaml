@@ -5,7 +5,7 @@ steps:
   args:
     - '-c'
     - |
-      cd resources
+      cd ./resources
       kustomize edit set image gcr.io/${PROJECT_ID}/gke-flask-app:$(git log -n 2 --pretty=format:"%H" | tail -1)
       cd ..
       kustomize build "./overlays/prod" -o "/workspace/resources.yaml"
