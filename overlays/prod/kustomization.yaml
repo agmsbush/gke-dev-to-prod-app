@@ -1,0 +1,8 @@
+namePrefix: prod-
+namespace: prod
+commonLabels:
+  env: prod
+bases:
+- ../../resources
+patchesStrategicMerge:
+- deployment.yaml

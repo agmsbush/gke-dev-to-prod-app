@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gke-flask-app
+spec:
+  selector:
+    matchLabels:
+      app: gke-flask-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gke-flask-app
+    spec:
+      containers:
+      - name: gke-flask-app
+        image: gcr.io/agmsb-k8s/gke-flask-app
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+        env:
+        - name: ENABLE_ALPHA
+          valueFrom:
+            configMapKeyRef:
+              name: alpha-features
+              key: enableAlpha
