@@ -2,7 +2,7 @@ steps:
 - id: build-tag-push
   name: "gcr.io/k8s-skaffold/skaffold:v1.12.0"
   args:
-    - 'build'
+    - 'skaffold build'
     - '-t'
     - '${SHORT_SHA}'
   env:
@@ -13,7 +13,7 @@ steps:
 - id: render
   name: "gcr.io/k8s-skaffold/skaffold:v1.12.0"
   args:
-    - 'render'
+    - 'skaffold render'
     - '-p'
     - 'prod'
     - '--output'
