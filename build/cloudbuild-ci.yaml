@@ -1,27 +1,28 @@
 steps:
 - id: build-tag-push
-  name: "gcr.io/k8s-skaffold/skaffold:v1.12.0"
+  name: "gcr.io/k8s-skaffold/skaffold:v1.12.1"
   entrypoint: '/bin/bash'
   args:
     - '-c'
     - |
-      skaffold build
-  env:
-    - 'CLOUDSDK_COMPUTE_REGION=us-west1'
-    - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
-    - 'GCLOUD_PROJECT=agmsb-k8s'
-
-- id: render
-  name: "gcr.io/k8s-skaffold/skaffold:v1.12.0"
-  entrypoint: '/bin/bash'
-  args:
-    - '-c'
-    - |
+      skaffold build -t ${SHORT_SHA}
       skaffold render -p prod --output resources.yaml
   env:
     - 'CLOUDSDK_COMPUTE_REGION=us-west1'
     - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
     - 'GCLOUD_PROJECT=agmsb-k8s'
+
+# - id: render
+#   name: "gcr.io/k8s-skaffold/skaffold:v1.12.1"
+#   entrypoint: '/bin/bash'
+#   args:
+#     - '-c'
+#     - |
+#       skaffold render -p prod --output resources.yaml
+#   env:
+#     - 'CLOUDSDK_COMPUTE_REGION=us-west1'
+#     - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
+#     - 'GCLOUD_PROJECT=agmsb-k8s'
 
 - id: git-get-secret
   name: gcr.io/cloud-builders/gcloud
