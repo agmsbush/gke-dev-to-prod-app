@@ -5,7 +5,7 @@ steps:
   args:
     - '-c'
     - |
-      skaffold build -t ${SHORT_SHA}
+      export SKAFFOLD_TAG=${SHORT_SHA}
       skaffold render -p prod --output resources.yaml
   env:
     - 'CLOUDSDK_COMPUTE_REGION=us-west1'
