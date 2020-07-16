@@ -10,7 +10,8 @@ The workflow consists of two repositories in GitHub:
 
 The workflow is as follows:
 
-### Developer 
+### Developer
+
 - Developer develops code locally on a feature branch for `gke-dev-to-prod-app`.
 
 - Developer pushes feature branch code to remote.
@@ -25,7 +26,7 @@ The workflow is as follows:
 
 ### CI
 
-- Cloud Build triggers a build to build and tag a Docker image, push it to Container Registry, update Kustomize resources with new image tags and render the YAML for prod.
+- Cloud Build triggers a build to build and tag a Docker image using Buildpacks, push it to Container Registry, and render the YAML for deployment.
 
 - Cloud Build will then update the `gke-dev-to-prod-env` repo with the rendered YAML in a new candidate branch.
 
@@ -38,8 +39,8 @@ The workflow is as follows:
 ## Tools 
 
 - GitHub
-    - Secrets Manager
-- Docker
+- Secrets Manager
+- Buildpacks
 - Skaffold
 - Kustomize
 - Cloud Build
@@ -48,6 +49,4 @@ The workflow is as follows:
 ## TODO
 
 - Add functionality for Developer will to use Skaffold in dev mode with development Kubernetes environment (minikube, KIND, remote GKE, k3s, etc.) + Cloud Code with minikube
-- Add context to env repo for operators
 - Add .gcloudignore file to limit what triggers builds
-- Update with buildpacks + Skaffold
