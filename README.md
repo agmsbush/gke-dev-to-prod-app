@@ -48,8 +48,6 @@ The workflow is as follows:
 ## TODO
 
 - Add functionality for Developer will to use Skaffold in dev mode with development Kubernetes environment (minikube, KIND, remote GKE, k3s, etc.) + Cloud Code with minikube
-- One kustomization file that points at a base in a different repo (blueprints repo), customized further in CI pipeline
 - Add context to env repo for operators
 - Add .gcloudignore file to limit what triggers builds
 - Update with buildpacks + Skaffold
-- Update repo structure to be flat
