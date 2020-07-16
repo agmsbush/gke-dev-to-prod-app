@@ -2,6 +2,6 @@ namePrefix: dev-
 commonLabels:
   env: dev
 bases:
-- ../../resources
+- https://github.com/agmsbush/gke-dev-to-prod-blueprints/resources
 patchesStrategicMerge:
 - configMap.yaml
