@@ -1,42 +1,37 @@
 steps:
-- id: build
-  name: "gcr.io/cloud-builders/docker"
-  args:
-    - 'build'
-    - '-t'
-    - 'gcr.io/${PROJECT_ID}/gke-flask-app:${SHORT_SHA}'
-    - './app'
-
-- id: push
-  name: "gcr.io/cloud-builders/docker"
-  args:
-    - 'push'
-    - 'gcr.io/${PROJECT_ID}/gke-flask-app:${SHORT_SHA}'
-  
-- id: kustomize
-  name: "gcr.io/${PROJECT_ID}/kustomize"
-  entrypoint: bash
+- id: build-tag-push
+  name: "gcr.io/k8s-skaffold/skaffold:v1.12.0"
+  entrypoint: '/bin/bash'
   args:
     - '-c'
     - |
-      cd ./resources
-      kustomize edit set image gcr.io/${PROJECT_ID}/gke-flask-app:${SHORT_SHA}
-      cd ..
-      kustomize build "./overlays/prod" -o "/workspace/resources.yaml"
+      skaffold build
   env:
-      - 'CLOUDSDK_COMPUTE_REGION=us-west1'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
-      - 'GCLOUD_PROJECT=agmsb-k8s'
+    - 'CLOUDSDK_COMPUTE_REGION=us-west1'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
+    - 'GCLOUD_PROJECT=agmsb-k8s'
 
-- id: git-secrets
+- id: render
+  name: "gcr.io/k8s-skaffold/skaffold:v1.12.0"
+  entrypoint: '/bin/bash'
+  args:
+    - '-c'
+    - |
+      skaffold render -p prod --output resources.yaml
+  env:
+    - 'CLOUDSDK_COMPUTE_REGION=us-west1'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
+    - 'GCLOUD_PROJECT=agmsb-k8s'
+
+- id: git-get-secret
   name: gcr.io/cloud-builders/gcloud
   entrypoint: 'bash'
   args: [ '-c', 'gcloud secrets versions access latest --secret=github > /root/.ssh/id_github' ]
   volumes:
   - name: 'ssh'
     path: /root/.ssh
-
-- id: git-configure
+  
+- id: git-configure-secret
   name: 'gcr.io/cloud-builders/git'
   entrypoint: 'bash'
   args:
@@ -51,7 +46,7 @@ steps:
   volumes:
   - name: 'ssh'
     path: /root/.ssh
-
+  
 - id: git-update-env-repo
   name: 'gcr.io/cloud-builders/git'
   entrypoint: 'bash'
