@@ -4,15 +4,42 @@
 
 This is an example dev-to-prod workflow for an containerized Kubernetes application.
 
-The workflow consists of two repositories in GitHub:
+The workflow consists of three repositories in GitHub:
+- gke-dev-to-prod-blueprints
+    - *Owned by: Platform*
+        - Kubernetes base resource manifests
+        - Kustomization for production Kubernetes manifests
+
 - gke-dev-to-prod-app
+    - *Owned by: Developers*
+        - Python Flask app
+        - Unit tests
+        - Procfile with Flask entrypoint
+        - Kubernetes configMap manifest for enabling alpha features in dev
+
+    - *Supplied by: Platform, Owned by: Developers*
+        - Kustomization pointing to upstream blueprint K8s yaml
+        - Skaffold config for Kubernetes deployment, with profiles for dev and prod
+        - Cloud Build config for Test Runners
+        - Cloud Build config for Continuous Integration
+
 - gke-dev-to-prod-env
+    - *Owned by: Platform*
+        - Cloud Build for Deployment
+        - Hydrated/Rendered Kubernetes Manifests in candidate branches
+        - Hydrated/Rendered and Applied Kubernetes Manifests in master branch
+
+
 
 The workflow is as follows:
 
-### Developer
+### Development
 
 - Developer develops code locally on a feature branch for `gke-dev-to-prod-app`.
+
+- Developers can run `skaffold dev -p dev` to iteratively develop their app with a dev Kubernetes environment.
+
+- Developers can utilize Cloud Code in IDE to access dev service in dev Kubernetes environment.
 
 - Developer pushes feature branch code to remote.
 
@@ -22,31 +49,31 @@ The workflow is as follows:
 
 ### Code Review
 
-- Approver will review PR and merge into master.
+- Owner or approver will review PR and merge into master.
 
-### CI
+### Continuous Integration
 
-- Cloud Build triggers a build to build and tag a Docker image using Buildpacks, push it to Container Registry, and render the YAML for deployment.
+- Cloud Build triggers a build to build and tag a Docker image using Buildpacks, push it to Container Registry, and render the Kubernetes YAML for deployment.
 
-- Cloud Build will then update the `gke-dev-to-prod-env` repo with the rendered YAML in a new candidate branch.
+- Cloud Build will then update the `gke-dev-to-prod-env` repo with the rendered Kubernetes YAML in a new candidate branch.
 
 ### Deployment 
 
-- Approver will open and review PR and merge into master. 
+- Owner or approver will open and review PR from candidate branch and merge into master. 
 
-- Cloud Build triggers a build to use gke-deploy to apply rendered YAML to prod environment.
+- Cloud Build triggers a build to use `gke-deploy` to apply rendered YAML to prod environment.
 
 ## Tools 
 
 - GitHub
 - Secrets Manager
-- Buildpacks
+- Cloud Code
 - Skaffold
+- Cloud Native Buildpacks
 - Kustomize
 - Cloud Build
 - GKE
 
 ## TODO
 
-- Add functionality for Developer will to use Skaffold in dev mode with development Kubernetes environment (minikube, KIND, remote GKE, k3s, etc.) + Cloud Code with minikube
 - Add .gcloudignore file to limit what triggers builds
