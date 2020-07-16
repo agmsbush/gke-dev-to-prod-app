@@ -22,7 +22,7 @@ products = ['Kubernetes Engine',
             'BigQuery']
 
 app = Flask(__name__)
-alpha_enabled = os.environ.get('enableAlpha')
+alpha_enabled = os.environ.get('ENABLE_ALPHA')
 
 def get_product():
     return(random.choice(products))
