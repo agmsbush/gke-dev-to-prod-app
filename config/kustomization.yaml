@@ -1,4 +1,3 @@
-namePrefix: dev-
 commonLabels:
   env: dev
 bases:
