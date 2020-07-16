@@ -1,9 +1,11 @@
 steps:
 - id: build-tag-push
   name: "gcr.io/k8s-skaffold/skaffold:v1.12.0"
-  entrypoint: 'bash'
+  entrypoint: '/bin/bash'
   args:
-    - 'skaffold build -t ${SHORT_SHA}'
+    - '-c'
+    - |
+      skaffold build -t ${SHORT_SHA}
   env:
     - 'CLOUDSDK_COMPUTE_REGION=us-west1'
     - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
@@ -11,9 +13,11 @@ steps:
 
 - id: render
   name: "gcr.io/k8s-skaffold/skaffold:v1.12.0"
-  entrypoint: 'bash'
+  entrypoint: '/bin/bash'
   args:
-    - 'skaffold render -p prod --output resources.yaml'
+    - '-c'
+    - |
+      skaffold render -p prod --output resources.yaml
   env:
     - 'CLOUDSDK_COMPUTE_REGION=us-west1'
     - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
