@@ -7,6 +7,9 @@ build:
   - image: gcr.io/agmsb-k8s/gke-flask-app
     buildpacks:
       builder: "gcr.io/buildpacks/builder:v1"
+      # dependencies:
+      #   paths:
+      #   - app
 deploy:
   kustomize:
     paths:
@@ -16,9 +19,9 @@ profiles:
   deploy:
     kustomize:
       paths:
-      - config
+      - ../config
 - name: prod
   deploy:
     kustomize:
       paths:
-      - https://github.com/agmsbush/gke-dev-to-prod-blueprints/overlays/prod
+      - https://github.com/agmsbush/gke-dev-to-prod-blueprints/overlays/prods
