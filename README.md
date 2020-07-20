@@ -5,6 +5,7 @@
 This is an example dev-to-prod workflow for an containerized Kubernetes application.
 
 The workflow consists of three repositories in GitHub:
+
 - gke-dev-to-prod-blueprints
     - *Owned by: Platform*
         - Kubernetes base resource manifests
@@ -16,7 +17,7 @@ The workflow consists of three repositories in GitHub:
         - Unit tests
 
     - *Supplied by: Platform, Owned by: Developers*
-         - Procfile with Flask entrypoint
+        - Procfile with Flask entrypoint
         - Kustomization pointing to upstream blueprint K8s yaml
         - Skaffold config for Kubernetes deployment, with profiles for dev and prod
         - Cloud Build config for Test Runners
