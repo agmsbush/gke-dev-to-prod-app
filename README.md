@@ -14,9 +14,9 @@ The workflow consists of three repositories in GitHub:
     - *Owned by: Developers*
         - Python Flask app
         - Unit tests
-        - Procfile with Flask entrypoint
 
     - *Supplied by: Platform, Owned by: Developers*
+         - Procfile with Flask entrypoint
         - Kustomization pointing to upstream blueprint K8s yaml
         - Skaffold config for Kubernetes deployment, with profiles for dev and prod
         - Cloud Build config for Test Runners
