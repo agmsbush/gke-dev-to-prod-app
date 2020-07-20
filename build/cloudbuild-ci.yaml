@@ -6,7 +6,8 @@ steps:
     - '-c'
     - |
       export SKAFFOLD_TAG=${SHORT_SHA}
-      skaffold render -p prod --output resources.yaml
+      cd app
+      skaffold render -p prod --output ../resources.yaml
   env:
     - 'CLOUDSDK_COMPUTE_REGION=us-west1'
     - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
