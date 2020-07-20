@@ -24,4 +24,4 @@ profiles:
   deploy:
     kustomize:
       paths:
-      - https://github.com/agmsbush/gke-dev-to-prod-blueprints/overlays/prods
+      - https://github.com/agmsbush/gke-dev-to-prod-blueprints/overlays/prod
