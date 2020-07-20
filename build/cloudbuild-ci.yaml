@@ -11,6 +11,9 @@ steps:
     - 'CLOUDSDK_COMPUTE_REGION=us-west1'
     - 'CLOUDSDK_CONTAINER_CLUSTER=oregon'
     - 'GCLOUD_PROJECT=agmsb-k8s'
+  volumes:
+    - name: 'ssh'
+      path: /root/.ssh
 
 - id: git
   name: gcr.io/agmsb-k8s/gcloud
