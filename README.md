@@ -15,7 +15,6 @@ The workflow consists of three repositories in GitHub:
         - Python Flask app
         - Unit tests
         - Procfile with Flask entrypoint
-        - Kubernetes configMap manifest for enabling alpha features in dev
 
     - *Supplied by: Platform, Owned by: Developers*
         - Kustomization pointing to upstream blueprint K8s yaml
@@ -28,7 +27,6 @@ The workflow consists of three repositories in GitHub:
         - Cloud Build for Deployment
         - Hydrated/Rendered Kubernetes Manifests in candidate branches
         - Hydrated/Rendered and Applied Kubernetes Manifests in master branch
-
 
 
 The workflow is as follows:
