@@ -13,7 +13,6 @@ hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
 datetime = datetime.now().replace(microsecond=0).isoformat()
 products = ['Kubernetes Engine',
-            'Anthos',
             'Cloud Build',
             'Cloud Functions',
             'Cloud Logging',
