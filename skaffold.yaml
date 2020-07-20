@@ -10,7 +10,7 @@ build:
 deploy:
   kustomize:
     paths:
-    - https://github.com/agmsbush/gke-dev-to-prod-blueprints/resources
+    - https://github.com/agmsbush/gke-dev-to-prod-blueprints/
 profiles:
 - name: dev
   deploy:
