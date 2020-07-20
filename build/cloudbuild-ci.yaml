@@ -18,7 +18,7 @@ steps:
 - id: git
   name: gcr.io/agmsb-k8s/gcloud
   entrypoint: 'bash'
-  args: [ '-c', './builder/configure_git.sh' ]
+  args: [ '-c', '/builder/configure_git.sh' ]
   volumes:
   - name: 'ssh'
     path: /root/.ssh
