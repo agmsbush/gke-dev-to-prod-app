@@ -8,7 +8,7 @@ import sys
 import requests
 import random
 
-app_version = "dev"
+app_version = "dev-feature-ready"
 hostname = socket.gethostname()
 ip = socket.gethostbyname(hostname)
 datetime = datetime.now().replace(microsecond=0).isoformat()
