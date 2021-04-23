@@ -75,4 +75,9 @@ The workflow is as follows:
 
 ## TODO
 
-- Add .gcloudignore file to limit what triggers builds
+- Add Cloud Build profile for build
+- Add Java app
+- Add Bazel step into GCB
+- Update Cloud Build to use Custom Workers
+- Update Cloud Build to use Secrets Manager integration for Git
+- Convert "blueprint app" as Cloud Code Custom Template 
