@@ -75,4 +75,10 @@ The workflow is as follows:
 
 ## TODO
 
-- Add .gcloudignore file to limit what triggers builds
+- Update Cloud Build to use Secrets Manager integration for Git
+- Add remote Skaffold profile Cloud Build
+- Import Skaffold modules
+- Update Cloud Build to use Custom Workers
+- Add Golang example
+    - Add Bazel step into GCB
+- Add Python and Golang as Cloud Code Custom Samples
